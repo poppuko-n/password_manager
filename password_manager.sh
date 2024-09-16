@@ -3,7 +3,7 @@
 #ファイル作成
 password_file=password.txt
 if [ -f "password_file" ]; then
-    touch password_file
+    touch "$password_file"
 fi
 
 #初期表示
@@ -20,19 +20,24 @@ while true; do
         read -p "ユーザー名を入力してください：" user_name
         read -p "パスワードを入力してください：" password
         # 入力情報をファイルへ保存
-        echo "$service_name":"$user_name":"$password" >> password_file
+        echo "$service_name":"$user_name":"$password" >> "$password_file"
         echo "パスワードの追加は成功しました。"
         ;;
 
         "Get Password")
         # Get Password が入力された場合
-        サービス名を入力してください：
+        read -p "サービス名を入力してください：" service
+
         ## サービス名が保存されていなかった場合
-        そのサービスは登録されていません。
+        check=$(grep "^$service:" "$password_file")
+        if  [ -z "$check" ]; then
+            echo "そのサービスは登録されていません。"
+        else
         ## サービス名が保存されていた場合
-        サービス名：hoge
-        ユーザー名：fuga
-        パスワード：piyo
+            echo "サービス名：hoge"
+            echo "ユーザー名：fuga"
+            echo "パスワード：piyo"
+        fi
         ;;
 
         "Exit")
